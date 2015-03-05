@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">SmartThermostat</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="sensor_column_title">Sensor</string>
+    <string name="temperature">Temperature</string>
+    <string name="thermostat_names">Thermostat name</string>
+    <string name="sensors">sensors</string>
+    <string name="active">Active</string>
+</resources>

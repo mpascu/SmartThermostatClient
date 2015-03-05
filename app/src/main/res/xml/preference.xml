@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="Connection preferences">
+
+        <EditTextPreference
+            android:key="URL_preference"
+            android:title="Server URL"
+            android:summary="Enter the URL of the server"
+            android:dialogTitle="Enter the URL of the server" />
+
+        <ListPreference
+            android:key="refresh_interval"
+            android:title="Refresh interval"
+            android:summary="Enter the refreshing interval"
+            android:entries="@array/intervalEntries"
+            android:entryValues="@array/intervalValues" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="PreferenceCategory A">
+
+        <CheckBoxPreference
+            android:key="checkbox_preference"
+            android:title="Checkbox "
+            android:summary="olakase" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
