@@ -29,8 +29,8 @@ import java.util.concurrent.TimeUnit;
 * Created by Marc on 01/03/2015.
 */
 public class SummaryFragment extends Fragment implements Observer{
-    private Button buttonDELETE;
-    private Button buttonPOST;
+    private Button buttonDeleteThermometers;
+    private Button buttonAddThermometer;
     private RequestQueue queue;
     private String serverURL;
     private SharedPreferences prefs;
@@ -40,9 +40,9 @@ public class SummaryFragment extends Fragment implements Observer{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-        buttonDELETE = (Button)rootView.findViewById(R.id.buttonPUT);
-        buttonPOST = (Button)rootView.findViewById(R.id.buttonPOST);
-
+        buttonDeleteThermometers = (Button)rootView.findViewById(R.id.buttonPUT);
+        buttonAddThermometer = (Button)rootView.findViewById(R.id.buttonPOST);
+        Button addThermostat = (Button) rootView.findViewById(R.id.addThermostat);
 
         //load shared preferences
         prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
@@ -51,22 +51,23 @@ public class SummaryFragment extends Fragment implements Observer{
         final Response.Listener<String> listener = new Response.Listener<String>() {
             @Override
             public void onResponse(String res) {
-                Toast.makeText(getActivity(),"New temperature added succesfully!",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),res,Toast.LENGTH_SHORT).show();
             }
         };
+
         final Response.ErrorListener errorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getActivity(),error.toString(),Toast.LENGTH_LONG).show();
             }
         };
-        buttonDELETE.setOnClickListener(new View.OnClickListener() {
+        buttonDeleteThermometers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 APIRequestHandler.INSTANCE.makeDeleteRequest(serverURL + "/temp",listener,errorListener);
             }
         });
-        buttonPOST.setOnClickListener(new View.OnClickListener() {
+        buttonAddThermometer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final EditText input = new EditText(getActivity());
@@ -83,6 +84,26 @@ public class SummaryFragment extends Fragment implements Observer{
                                 // Do nothing.
                             }
                         }).show();
+
+            }
+        });
+        addThermostat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final EditText input = new EditText(getActivity());
+                new AlertDialog.Builder(getActivity())
+                        .setTitle("Add thermostat")
+                        .setMessage("Enter the name of the thermostat")
+                        .setView(input)
+                        .setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                APIRequestHandler.INSTANCE.makePostRequest(serverURL + "/thermo",input.getText().toString(),listener,errorListener);
+                            }
+                        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        // Do nothing.
+                    }
+                }).show();
 
             }
         });

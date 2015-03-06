@@ -46,13 +46,5 @@ public class APIRequestHandler {
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
     }
-/*
-    public class StringHolder{
-        private String str;
 
-        public void setStr(String s){
-            this.str=s;
-        }
-        public String getStr(){return str;}
-    }*/
 }

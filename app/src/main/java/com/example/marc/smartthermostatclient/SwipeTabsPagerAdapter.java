@@ -10,7 +10,7 @@ import java.util.Observable;
 * Created by Marc on 01/03/2015.
 */
 public class SwipeTabsPagerAdapter extends FragmentPagerAdapter {
-    final int PAGE_COUNT = 4;
+    private int PAGE_COUNT = 1;
     private Observable observable;
     private SummaryFragment summary;
     public SwipeTabsPagerAdapter(FragmentManager supportFragmentManager, Observable listener) {
@@ -25,16 +25,17 @@ public class SwipeTabsPagerAdapter extends FragmentPagerAdapter {
         return PAGE_COUNT;
     }
 
+    public void setCount(int c){
+        this.PAGE_COUNT=c+1;
+        notifyDataSetChanged();
+    }
+
     public CharSequence getPageTitle(int position) {
         switch (position){
             case 0:
                 return "Summary";
-            case 1:
-                return "Programmer";
-            case 2:
-                return "Options";
         }
-        return "Default";
+        return "Thermostat "+position;
 
     }
     @Override

@@ -16,16 +16,20 @@ import java.util.Observable;
 public class MainActivity extends ActionBarActivity {
 
     private ObservableSwitchChangeListener listener;
+    private SwipeTabsPagerAdapter pagerAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         listener = new ObservableSwitchChangeListener();
         ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
-        viewPager.setAdapter(new SwipeTabsPagerAdapter(getSupportFragmentManager(), listener));
+        pagerAdapter = new SwipeTabsPagerAdapter(getSupportFragmentManager(), listener);
+        viewPager.setAdapter(pagerAdapter);
         APIRequestHandler.INSTANCE.setQueue(Volley.newRequestQueue(this));
     }
-
+    public void setPages(int pages){
+        pagerAdapter.setCount(pages);
+    }
     @Override
     protected void onResume() {
         super.onResume();
