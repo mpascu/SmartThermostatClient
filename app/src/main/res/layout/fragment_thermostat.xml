@@ -1,6 +1,201 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="3">
+        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/radioGroupMode">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="AUTO"
+                android:id="@+id/radioButtonAUTO"
+                android:layout_weight="1" />
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ON"
+                android:id="@+id/radioButtonON"
+                android:layout_weight="1" />
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="OFF"
+                android:id="@+id/radioButtonOFF"
+                android:layout_weight="1"
+                android:checked="true"/>
+    </RadioGroup>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/programmer_layout"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible">
+        <LinearLayout
+            android:id="@+id/left_programmer_layout"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:id="@+id/tempLayout"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:text=">"
+                    android:textSize="40sp"
+                    android:id="@+id/button"
+                    android:gravity="center_horizontal|center_vertical" />
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="40dp"
+                        android:textSize="30sp"
+                        android:text="21 ºC"
+                        android:id="@+id/thermo_temperature"
+                        android:singleLine="true"
+                        android:layout_gravity="center"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginStart="2dp" />
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent">
+                        <Button
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:text="-"
+                            android:textSize="15sp"
+                            android:id="@+id/minus"
+                            />
+                        <Button
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:text="+"
+                            android:textSize="15sp"
+                            android:id="@+id/plus"
+                            android:textAlignment="center"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+            <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/radioGroup">
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="MIN"
+                    android:id="@+id/radioButtonMIN"
+                    android:layout_weight="1" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="AVG"
+                    android:id="@+id/radioButtonAVG"
+                    android:layout_weight="1" />
+
+            </RadioGroup>
+            <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Time programmer"
+            android:id="@+id/checkBox" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/rightLayout"
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+            <TextView
+                android:id="@+id/thermometers_label"
+                style="?android:attr/listSeparatorTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Thermometers"
+                android:textAlignment="center"/>
+            <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:stretchColumns="*"
+                android:paddingLeft="10dp">
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:text="Cuina"
+                        android:textColor="#000000"
+                        android:textSize="12sp"
+                        />
+                    <TextView
+                        android:text="21,3º C"
+                        android:textColor="#000000"
+                        android:textSize="12sp"
+                        />
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:text="Pasillo"
+                        android:textColor="#000000"
+                        android:textSize="12sp"
+                        />
+                    <TextView
+                        android:text="21,7º C"
+                        android:textColor="#000000"
+                        android:textSize="12sp"
+                        />
+                </TableRow>
+            </TableLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_gravity="bottom">
+
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:text="Add"
+                    android:textSize="12sp"
+                    android:id="@+id/button2" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:text="Remove"
+                    android:textSize="12sp"
+                    android:id="@+id/button3" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
 
 </LinearLayout>

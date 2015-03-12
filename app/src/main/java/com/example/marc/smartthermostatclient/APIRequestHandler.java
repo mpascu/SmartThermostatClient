@@ -15,7 +15,7 @@ public class APIRequestHandler {
     public final static APIRequestHandler INSTANCE = new APIRequestHandler();
     private RequestQueue queue;
 
-    public APIRequestHandler() {
+    private APIRequestHandler() {
     }
 
     public void setQueue(RequestQueue requestQueue) {

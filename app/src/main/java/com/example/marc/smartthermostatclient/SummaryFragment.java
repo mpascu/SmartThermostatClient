@@ -2,7 +2,6 @@ package com.example.marc.smartthermostatclient;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -14,7 +13,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
@@ -29,25 +27,31 @@ import java.util.concurrent.TimeUnit;
 * Created by Marc on 01/03/2015.
 */
 public class SummaryFragment extends Fragment implements Observer{
-    private Button buttonDeleteThermometers;
-    private Button buttonAddThermometer;
-    private RequestQueue queue;
+
     private String serverURL;
     private SharedPreferences prefs;
     ScheduledFuture<?> sf;
-
+    private int refreshInterval;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-        buttonDeleteThermometers = (Button)rootView.findViewById(R.id.buttonPUT);
-        buttonAddThermometer = (Button)rootView.findViewById(R.id.buttonPOST);
+        Button buttonDeleteThermometers = (Button)rootView.findViewById(R.id.buttonPUT);
+        Button buttonAddThermometer = (Button)rootView.findViewById(R.id.buttonPOST);
         Button addThermostat = (Button) rootView.findViewById(R.id.addThermostat);
 
         //load shared preferences
         prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         serverURL=prefs.getString("URL_preference", "");
+        prefs.registerOnSharedPreferenceChangeListener(
+                new SharedPreferences.OnSharedPreferenceChangeListener() {
+                    public void onSharedPreferenceChanged(
+                            SharedPreferences prefs, String key) {
 
+                        serverURL=prefs.getString("URL_preference", "");
+
+                    }
+                });
         final Response.Listener<String> listener = new Response.Listener<String>() {
             @Override
             public void onResponse(String res) {
@@ -101,7 +105,6 @@ public class SummaryFragment extends Fragment implements Observer{
                             }
                         }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        // Do nothing.
                     }
                 }).show();
 
@@ -109,22 +112,20 @@ public class SummaryFragment extends Fragment implements Observer{
         });
         return rootView;
     }
-
+/*
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         serverURL=prefs.getString("URL_preference", "");
     }
-
+//*/
     @Override
     public void update(Observable observableSwitch, Object checked) {
         if (checked.equals(true)){
-            prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            String serverURL = prefs.getString("URL_preference", "");
-            UpdatesScheduler updateScheduler = new UpdatesScheduler(this.getActivity(), getView(), serverURL);
+            refreshInterval = Integer.parseInt(prefs.getString("refresh_interval", ""));
+            SummaryUpdatesScheduler updateScheduler = new SummaryUpdatesScheduler(this.getActivity(), getView(), serverURL);
             ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
-            int interval = Integer.parseInt(prefs.getString("refresh_interval", ""));
-            sf = exec.scheduleAtFixedRate(updateScheduler, 0, interval, TimeUnit.MILLISECONDS);
+            sf = exec.scheduleAtFixedRate(updateScheduler, 0, refreshInterval, TimeUnit.MILLISECONDS);
         }
         else{
             sf.cancel(false);

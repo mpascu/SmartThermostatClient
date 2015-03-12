@@ -40,10 +40,9 @@ public class SwipeTabsPagerAdapter extends FragmentPagerAdapter {
     }
     @Override
     public Fragment getItem(int position) {
-        switch (position){
-            case 0:
+        if (position==0)
                 return summary;
-        }
-        return DefaultPageFragment.create(position + 1);
+        return ThermostatFragment.create(position);
+
     }
 }
