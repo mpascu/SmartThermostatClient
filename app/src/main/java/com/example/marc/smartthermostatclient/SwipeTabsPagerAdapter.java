@@ -4,6 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.example.marc.smartthermostatclient.Fragments.SummaryFragment;
+import com.example.marc.smartthermostatclient.Fragments.ThermostatFragment;
+
 import java.util.Observable;
 
 /**
@@ -42,7 +45,10 @@ public class SwipeTabsPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         if (position==0)
                 return summary;
-        return ThermostatFragment.create(position);
-
+        else{
+            ThermostatFragment frag = ThermostatFragment.create(position);
+            this.observable.addObserver(frag);
+            return frag;
+        }
     }
 }

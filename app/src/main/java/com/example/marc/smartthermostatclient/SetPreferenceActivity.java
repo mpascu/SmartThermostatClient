@@ -3,6 +3,8 @@ package com.example.marc.smartthermostatclient;
 import android.app.Activity;
 import android.os.Bundle;
 
+import com.example.marc.smartthermostatclient.Fragments.PrefsFragment;
+
 /**
  * Created by Marc on 25/02/2015.
  */

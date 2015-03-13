@@ -1,4 +1,4 @@
-package com.example.marc.smartthermostatclient;
+package com.example.marc.smartthermostatclient.Fragments;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -15,6 +15,9 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.example.marc.smartthermostatclient.APIRequestHandler;
+import com.example.marc.smartthermostatclient.R;
+import com.example.marc.smartthermostatclient.SummaryUpdatesScheduler;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -41,17 +44,8 @@ public class SummaryFragment extends Fragment implements Observer{
         Button addThermostat = (Button) rootView.findViewById(R.id.addThermostat);
 
         //load shared preferences
-        prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        serverURL=prefs.getString("URL_preference", "");
-        prefs.registerOnSharedPreferenceChangeListener(
-                new SharedPreferences.OnSharedPreferenceChangeListener() {
-                    public void onSharedPreferenceChanged(
-                            SharedPreferences prefs, String key) {
+        serverURL=loadPreferences();
 
-                        serverURL=prefs.getString("URL_preference", "");
-
-                    }
-                });
         final Response.Listener<String> listener = new Response.Listener<String>() {
             @Override
             public void onResponse(String res) {
@@ -112,13 +106,25 @@ public class SummaryFragment extends Fragment implements Observer{
         });
         return rootView;
     }
+
+    private String loadPreferences() {
+        prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        prefs.registerOnSharedPreferenceChangeListener(
+                new SharedPreferences.OnSharedPreferenceChangeListener() {
+                    public void onSharedPreferenceChanged(
+                            SharedPreferences prefs, String key) {
+                        serverURL=prefs.getString("URL_preference", "");
+
+                    }
+                });
+        return prefs.getString("URL_preference", "");
+    }
 /*
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        serverURL=prefs.getString("URL_preference", "");
+    public void onPause() {
+        sf.cancel(false);
     }
-//*/
+*/
     @Override
     public void update(Observable observableSwitch, Object checked) {
         if (checked.equals(true)){

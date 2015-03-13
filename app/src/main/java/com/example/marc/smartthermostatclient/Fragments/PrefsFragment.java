@@ -1,7 +1,9 @@
-package com.example.marc.smartthermostatclient;
+package com.example.marc.smartthermostatclient.Fragments;
 
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
+
+import com.example.marc.smartthermostatclient.R;
 
 /**
  * Created by Marc on 25/02/2015.

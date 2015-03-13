@@ -11,6 +11,8 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.example.marc.smartthermostatclient.DataStructure.Sensor;
+import com.example.marc.smartthermostatclient.DataStructure.SensorManager;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -47,6 +49,7 @@ public class SummaryUpdatesScheduler extends UpdatesScheduler {
                 ThermoJsonParser(res);
             }
         };
+        //IMPLEMENTAR EL ERRRORLSITENER AL REQUESTHANDLER
         Response.ErrorListener errorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
@@ -67,6 +70,7 @@ public class SummaryUpdatesScheduler extends UpdatesScheduler {
                 JSONObject sensor = (JSONObject)temperatures.get(x);
                 JSONObject sensorValues = (JSONObject)sensor.get(Integer.toString(x+1));
 
+                Sensor s = SensorManager.getInstance().updateSensor(x,(String)sensorValues.get("name"),(String)sensorValues.get("value"));
                 TableRow entry = new TableRow(context);
                 entry.setLayoutParams(new TableRow.LayoutParams(
                         TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT));
@@ -74,11 +78,11 @@ public class SummaryUpdatesScheduler extends UpdatesScheduler {
                         TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT,1f);
                 TextView cell = new TextView(context);
                 cell.setLayoutParams(layoutParams);
-                cell.setText("(" + x + ") " + sensorValues.get("name").toString());
+                cell.setText("(" + x + ") " + s.getName());
                 entry.addView(cell);
                 TextView cell1 = new TextView(context);
                 cell1.setLayoutParams(layoutParams);
-                cell1.setText(sensorValues.get("value").toString() + " ºC");
+                cell1.setText(s.getTemperature() + " ºC");
                 entry.addView(cell1);
                 temperaturesTable.addView(entry,x+1);
             }
