@@ -25,4 +25,8 @@ public class Sensor {
     public void setTemperature(float temperature) {
         this.temperature = temperature;
     }
+
+    public int getId() {
+        return id;
+    }
 }

@@ -70,7 +70,7 @@ public class SummaryUpdatesScheduler extends UpdatesScheduler {
                 JSONObject sensor = (JSONObject)temperatures.get(x);
                 JSONObject sensorValues = (JSONObject)sensor.get(Integer.toString(x+1));
 
-                Sensor s = SensorManager.getInstance().updateSensor(x,(String)sensorValues.get("name"),(String)sensorValues.get("value"));
+                Sensor s = SensorManager.getInstance().updateSensor(x+1,(String)sensorValues.get("name"),(String)sensorValues.get("value"));
                 TableRow entry = new TableRow(context);
                 entry.setLayoutParams(new TableRow.LayoutParams(
                         TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT));

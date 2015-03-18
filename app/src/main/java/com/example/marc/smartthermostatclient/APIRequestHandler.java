@@ -40,6 +40,19 @@ public class APIRequestHandler {
         };
         queue.add(postRequest);
     }
+    public void makePutRequest(String serverURL, final String value, final String mode, final String sensorIds, Response.Listener<String> responseListener, Response.ErrorListener errorListener) {
+        StringRequest postRequest = new StringRequest(Request.Method.PUT, serverURL, responseListener, errorListener) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("temperature", value);
+                params.put("mode", mode);
+                params.put("sensors", sensorIds);
+                return params;
+            }
+        };
+        queue.add(postRequest);
+    }
     public void makeDeleteRequest(String serverURL, Response.Listener<String> responseListener, Response.ErrorListener errorListener) {
         // Request a string response from the provided URL
         StringRequest stringRequest = new StringRequest(Request.Method.DELETE, serverURL, responseListener, errorListener);

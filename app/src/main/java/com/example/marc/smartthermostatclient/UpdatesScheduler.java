@@ -17,4 +17,6 @@ public abstract class UpdatesScheduler implements Runnable {
         this.rootView = rootView;
         this.url = url;
     }
+
+
 }
