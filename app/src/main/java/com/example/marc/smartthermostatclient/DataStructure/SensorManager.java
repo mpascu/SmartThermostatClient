@@ -19,7 +19,9 @@ public class SensorManager {
     public Sensor getSensor(int id){
         return sensorHashMap.get(id);
     }
-
+    public HashMap getSensors(){
+        return sensorHashMap;
+    }
     public void addSensor(int id, Sensor sensor){
         sensorHashMap.put(id, sensor);
     }

@@ -2,7 +2,6 @@ package com.example.marc.smartthermostatclient;
 
 import android.app.Activity;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Response;
@@ -59,15 +58,13 @@ public class ThermostatUpdateScheduler extends UpdatesScheduler{
             JSONArray JSONSensors = (JSONArray) temperatures.get("sensors");
             HashSet<Sensor> sensors = getSensors(JSONSensors);
 
-            this.thermostat = new Thermostat(context,(String)temperatures.get("name"),
+            this.thermostat = ThermostatManager.getInstance().getThermostat(id);
+            this.thermostat.update((String)temperatures.get("name"),
                     Double.parseDouble((String)temperatures.get("temperature")),
                     Thermostat.modeOptions.valueOf((String)temperatures.get("mode")),
                     sensors);
-
-            ThermostatManager.getInstance().addSensor(id,this.thermostat);
             this.thermostat.updateView(rootView);
-            TextView t = (TextView)rootView.findViewById(R.id.ThermostatText);
-            t.setText(temperatures.toString());
+
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -77,11 +74,11 @@ public class ThermostatUpdateScheduler extends UpdatesScheduler{
     private HashSet<Sensor> getSensors(JSONArray jsonSensors) {
         HashSet<Sensor> sensors = new HashSet<>();
         for (int x=0; x<jsonSensors.size();x++){
-            System.out.println("IDDDD"+(int)(long)jsonSensors.get(x));
-            System.out.println("calue"+SensorManager.getInstance().getSensor((int)(long)jsonSensors.get(x)).getId());
-            System.out.println(SensorManager.getInstance().getSensor((int) (long) jsonSensors.get(x)).getName());
-            System.out.println(SensorManager.getInstance().getSensor((int)(long)jsonSensors.get(x)).getTemperature());
-                sensors.add(SensorManager.getInstance().getSensor((int)(long)jsonSensors.get(x)));
+            //System.out.println("IDDDD"+(int)(long)jsonSensors.get(x));
+            //System.out.println("calue"+SensorManager.getInstance().getSensor((int)(long)jsonSensors.get(x)).getId());
+            //System.out.println(SensorManager.getInstance().getSensor((int) (long) jsonSensors.get(x)).getName());
+            ///System.out.println(SensorManager.getInstance().getSensor((int)(long)jsonSensors.get(x)).getTemperature());
+            sensors.add(SensorManager.getInstance().getSensor((int)(long)jsonSensors.get(x)));
         }
         return sensors;
     }

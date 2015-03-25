@@ -17,6 +17,7 @@ public class MainActivity extends ActionBarActivity {
 
     private ObservableSwitchChangeListener listener;
     private SwipeTabsPagerAdapter pagerAdapter;
+    private MenuItem toggleSwitch;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +35,13 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        toggleSwitch.setChecked(false);
     }
 
     @Override
@@ -41,7 +49,7 @@ public class MainActivity extends ActionBarActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         // Get the action view used in your toggleservice item
-        final MenuItem toggleSwitch = menu.findItem(R.id.myswitch);
+        toggleSwitch = menu.findItem(R.id.myswitch);
         Switch connectionSwitch = (Switch) toggleSwitch.getActionView().findViewById(R.id.connectionSwitch);
         connectionSwitch.setOnCheckedChangeListener(listener);
 

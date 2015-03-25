@@ -7,4 +7,15 @@
     <string name="thermostat_names">Thermostat name</string>
     <string name="sensors">sensors</string>
     <string name="active">Active</string>
+    <string name="min">MIN</string>
+    <string name="avg">AVG</string>
+    <string name="time_programmer">Time programmer</string>
+    <string name="thermometers">Thermometers</string>
+    <string name="add">Add</string>
+    <string name="remove">Remove</string>
+    <string name="select_sensor">\"Select the sensor to add\"</string>
+    <string name="delete_thermometers">DELETE THERMOMETERS</string>
+    <string name="add_thermometer">ADD THERMOMETER</string>
+    <string name="thermostats">Thermostats</string>
+    <string name="add_thermostat">ADD THERMOSTAT</string>
 </resources>

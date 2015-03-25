@@ -4,6 +4,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
+import com.example.marc.smartthermostatclient.DataStructure.Thermostat;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,14 +41,14 @@ public class APIRequestHandler {
         };
         queue.add(postRequest);
     }
-    public void makePutRequest(String serverURL, final String value, final String mode, final String sensorIds, Response.Listener<String> responseListener, Response.ErrorListener errorListener) {
+    public void makePutRequest(String serverURL, final Thermostat t, Response.Listener<String> responseListener, Response.ErrorListener errorListener) {
         StringRequest postRequest = new StringRequest(Request.Method.PUT, serverURL, responseListener, errorListener) {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("temperature", value);
-                params.put("mode", mode);
-                params.put("sensors", sensorIds);
+                params.put("temperature", Double.toString(t.getTemperature()));
+                params.put("mode", t.getMode().toString());
+                params.put("sensors", t.getSensorIds());
                 return params;
             }
         };

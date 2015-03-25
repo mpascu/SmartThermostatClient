@@ -53,12 +53,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
-                <Button
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:text=">"
-                    android:textSize="40sp"
-                    android:id="@+id/button"
+                <ImageButton
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:src="@drawable/ic_radiator"
+                    android:id="@+id/hot_cold"
                     android:gravity="center_horizontal|center_vertical" />
                 <LinearLayout
                     android:orientation="vertical"
@@ -66,7 +65,7 @@
                     android:layout_height="wrap_content">
                     <TextView
                         android:layout_width="80dp"
-                        android:layout_height="40dp"
+                        android:layout_height="30dp"
                         android:textSize="23sp"
                         android:text="21 ºC"
                         android:id="@+id/thermo_temperature"
@@ -104,13 +103,13 @@
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="MIN"
+                    android:text="@string/min"
                     android:id="@+id/radioButtonMIN"
                     android:layout_weight="1" />
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="AVG"
+                    android:text="@string/avg"
                     android:id="@+id/radioButtonAVG"
                     android:layout_weight="1" />
 
@@ -118,21 +117,20 @@
             <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Time programmer"
+            android:text="@string/time_programmer"
             android:id="@+id/checkBox" />
         </LinearLayout>
         <LinearLayout
             android:id="@+id/rightLayout"
             android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+            android:layout_height="wrap_content">
             <TextView
                 android:id="@+id/thermometers_label"
                 style="?android:attr/listSeparatorTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Thermometers"
-                android:textAlignment="center"/>
+                android:text="@string/thermometers"/>
             <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/thermo_temperatures_table"
                 android:layout_width="fill_parent"
@@ -180,7 +178,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
-                    android:text="Add"
+                    android:text="@string/add"
                     android:textSize="12sp"
                     android:id="@+id/button_add_sensor" />
 
@@ -188,7 +186,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
-                    android:text="Remove"
+                    android:text="@string/remove"
                     android:textSize="12sp"
                     android:id="@+id/button_remove_sensors" />
             </LinearLayout>
@@ -196,13 +194,5 @@
 
 
     </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/ThermostatText"
-        android:layout_gravity="center_horizontal" />
-
 
 </LinearLayout>

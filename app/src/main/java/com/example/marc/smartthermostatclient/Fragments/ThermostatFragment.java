@@ -1,5 +1,7 @@
 package com.example.marc.smartthermostatclient.Fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -7,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -14,11 +17,16 @@ import android.widget.Toast;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.example.marc.smartthermostatclient.APIRequestHandler;
+import com.example.marc.smartthermostatclient.DataStructure.Sensor;
+import com.example.marc.smartthermostatclient.DataStructure.SensorManager;
 import com.example.marc.smartthermostatclient.DataStructure.Thermostat;
 import com.example.marc.smartthermostatclient.DataStructure.ThermostatManager;
+import com.example.marc.smartthermostatclient.MainActivity;
 import com.example.marc.smartthermostatclient.R;
 import com.example.marc.smartthermostatclient.ThermostatUpdateScheduler;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.Executors;
@@ -33,7 +41,7 @@ public class ThermostatFragment extends android.support.v4.app.Fragment implemen
     private int position;
     private String thermostatURL;
     private ScheduledFuture<?> sf;
-    private Thermostat thermo;
+    private Thermostat t;
     public static ThermostatFragment create(int position) {
         Bundle args = new Bundle();
         args.putInt("POS", position);
@@ -51,7 +59,8 @@ public class ThermostatFragment extends android.support.v4.app.Fragment implemen
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_thermostat, container, false);
+        final View view = inflater.inflate(R.layout.fragment_thermostat, container, false);
+
         final Response.Listener responseListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -69,16 +78,22 @@ public class ThermostatFragment extends android.support.v4.app.Fragment implemen
         rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                Thermostat t = ThermostatManager.getInstance().getSensor(position);
                 if(checkedId==R.id.radioButtonAUTO){
                     programmerLayout.setVisibility(View.VISIBLE);
-                    APIRequestHandler.INSTANCE.makePutRequest(thermostatURL,Double.toString(t.getTemperature()),Thermostat.modeOptions.AUTO.toString(),t.getSensorIds(),responseListener,errorRsponseListener);
+                    t.setMode(Thermostat.modeOptions.AUTO);
+                    APIRequestHandler.INSTANCE.makePutRequest(thermostatURL,t,responseListener,errorRsponseListener);
                 }else{
                     programmerLayout.setVisibility(View.GONE);
-                    if (checkedId==R.id.radioButtonON)
-                        APIRequestHandler.INSTANCE.makePutRequest(thermostatURL,Double.toString(t.getTemperature()),Thermostat.modeOptions.ON.toString(),t.getSensorIds(),responseListener,errorRsponseListener);
-                    if (checkedId==R.id.radioButtonOFF)
-                        APIRequestHandler.INSTANCE.makePutRequest(thermostatURL,Double.toString(t.getTemperature()),Thermostat.modeOptions.OFF.toString(),t.getSensorIds(),responseListener,errorRsponseListener);
+                    if (checkedId==R.id.radioButtonON){
+                        t.setMode(Thermostat.modeOptions.ON);
+                        APIRequestHandler.INSTANCE.makePutRequest(thermostatURL,t,responseListener,errorRsponseListener);
+                    }
+
+                    if (checkedId==R.id.radioButtonOFF){
+                        t.setMode(Thermostat.modeOptions.OFF);
+                        APIRequestHandler.INSTANCE.makePutRequest(thermostatURL,t,responseListener,errorRsponseListener);
+                    }
+
                 }
             }
         });
@@ -87,30 +102,67 @@ public class ThermostatFragment extends android.support.v4.app.Fragment implemen
         plusTemperature.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Thermostat t = ThermostatManager.getInstance().getSensor(position);
-                APIRequestHandler.INSTANCE.makePutRequest(thermostatURL,Double.toString(t.getTemperature()+0.5),t.getMode().toString(),t.getSensorIds(),responseListener,errorRsponseListener);
+                t.setTemperature(t.getTemperature()+0.5);
+                APIRequestHandler.INSTANCE.makePutRequest(thermostatURL,t,responseListener,errorRsponseListener);
             }
         });
         Button minusTemperature = (Button)view.findViewById(R.id.minusTemp);
         minusTemperature.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Thermostat t = ThermostatManager.getInstance().getSensor(position);
-
-                double temp= t.getTemperature();
-                APIRequestHandler.INSTANCE.makePutRequest(thermostatURL,Double.toString(temp-0.5),t.getMode().toString(),t.getSensorIds(),responseListener,errorRsponseListener);
+                t.setTemperature(t.getTemperature()-0.5);
+                APIRequestHandler.INSTANCE.makePutRequest(thermostatURL,t,responseListener,errorRsponseListener);
             }
         });
 
         Button addSensor = (Button)view.findViewById(R.id.button_add_sensor);
+        addSensor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                final List<Sensor> availableSensors = new ArrayList<Sensor>(SensorManager.getInstance().getSensors().values());
+                List<String> sensorNames = new ArrayList<>();
+                for(Sensor s:availableSensors)
+                    sensorNames.add(s.getName());
+
+                final CharSequence[] charSequenceSensors = sensorNames.toArray(new CharSequence[sensorNames.size()]);
+                builder.setTitle(getResources().getString(R.string.select_sensor));
+                builder.setItems(charSequenceSensors,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                t.addSensor(availableSensors.get(which));
+                                APIRequestHandler.INSTANCE.makePutRequest(thermostatURL,t,responseListener,errorRsponseListener);
+                            }
+                        });
+                builder.create().show();
+            }
+        });
         Button removeSensors = (Button)view.findViewById(R.id.button_remove_sensors);
         removeSensors.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                t.removeSensors();
+                APIRequestHandler.INSTANCE.makePutRequest(thermostatURL,t,responseListener,errorRsponseListener);
+            }
+        });
+        final ImageButton hotOrColdButton = (ImageButton)view.findViewById(R.id.hot_cold);
+        hotOrColdButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(t.isHot()){
+                    hotOrColdButton.setImageResource(R.drawable.ic_ac);
+                    t.setHot(false);
+                }
+                else{
+                    hotOrColdButton.setImageResource(R.drawable.ic_radiator);
+                    t.setHot(true);
+                }
             }
         });
         thermostatURL=loadUrlFromPreferences();
+        t=new Thermostat((MainActivity)getActivity());
+        ThermostatManager.getInstance().addThermostat(position,t);
+
         return view;
     }
 
@@ -129,11 +181,8 @@ public class ThermostatFragment extends android.support.v4.app.Fragment implemen
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         int refreshInterval = Integer.parseInt(prefs.getString("refresh_interval", ""));
         ThermostatUpdateScheduler updateScheduler = new ThermostatUpdateScheduler(this.getActivity(), getView(), thermostatURL, position);
-
-        //System.out.println("Thermostat fragment"+t.getName());
         ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
         sf = exec.scheduleAtFixedRate(updateScheduler, 0, refreshInterval, TimeUnit.MILLISECONDS);
-
     }
 
     @Override

@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">SmartThermostat</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Preferencies</string>
+    <string name="sensor_column_title">Sensor</string>
+    <string name="temperature">Temperatura</string>
+    <string name="thermostat_names">Nom del termostat</string>
+    <string name="sensors">sensors</string>
+    <string name="active">Actiu</string>
+    <string name="min">MIN</string>
+    <string name="avg">AVG</string>
+    <string name="time_programmer">Programador horari</string>
+    <string name="thermometers">Termometres</string>
+    <string name="add">Afegir</string>
+    <string name="remove">Eliminar</string>
+    <string name="select_sensor">\"Sel·lecciona el sensor que vols afegir\"</string>
+    <string name="delete_thermometers">ELIMINAR TERMOMETRES</string>
+    <string name="add_thermometer">AFEGIR TERMOMETRES</string>
+    <string name="thermostats">Termostats</string>
+    <string name="add_thermostat">Afergir termostat</string>
+</resources>

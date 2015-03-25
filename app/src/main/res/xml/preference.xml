@@ -19,6 +19,12 @@
     <PreferenceCategory
         android:title="PreferenceCategory A">
 
+        <ListPreference
+            android:key="refresh_interval"
+            android:title="Refresh interval"
+            android:summary="Enter the refreshing interval"
+            android:entries="@array/languages"
+            android:entryValues="@array/langValues" />
 
     </PreferenceCategory>
 

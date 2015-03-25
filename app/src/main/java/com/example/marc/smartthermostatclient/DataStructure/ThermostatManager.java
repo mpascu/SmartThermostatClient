@@ -1,6 +1,7 @@
 package com.example.marc.smartthermostatclient.DataStructure;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * Created by Marc on 13/03/2015.
@@ -16,21 +17,15 @@ public class ThermostatManager {
         return ourInstance;
     }
 
-    public Thermostat getSensor(int id){
+    public Thermostat getThermostat(int id){
         return sensorHashMap.get(id);
     }
 
-    public void addSensor(int id, Thermostat sensor){
+    public void addThermostat(int id, Thermostat sensor){
         sensorHashMap.put(id, sensor);
     }
-/*
-    public Sensor updateSensor(int x, String name, String value) {
-        if (sensorHashMap.containsKey(x)){
-            sensorHashMap.get(x).setTemperature(Float.parseFloat(value));
-        }
-        else{
-            sensorHashMap.put(x,new Sensor(x,name,Float.parseFloat(value)));
-        }
-        return sensorHashMap.get(x);
+
+    public void updateThermostat(int id, String name, double temperature, Thermostat.modeOptions mode, HashSet<Sensor> sensors) {
+        sensorHashMap.get(id).update( name,  temperature, mode, sensors);
     }
-*/}
+}

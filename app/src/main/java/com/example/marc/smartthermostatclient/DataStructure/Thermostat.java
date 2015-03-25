@@ -20,15 +20,13 @@ public class Thermostat {
     private String name;
     private double temperature;
     public enum modeOptions{ON,OFF,AUTO};
+    private boolean hot;
     private modeOptions mode;
     private HashSet<Sensor> sensors;
 
-    public Thermostat(MainActivity context, String name, double temperature, modeOptions m, HashSet<Sensor> sensors) {
+    public Thermostat(MainActivity context) {
         this.context = context;
-        this.name = name;
-        this.temperature = temperature;
-        this.mode = m;
-        this.sensors = sensors;
+        this.hot=true;
     }
 
     public double getTemperature() {
@@ -71,7 +69,6 @@ public class Thermostat {
         TableLayout temperaturesTable = (TableLayout) rootView.findViewById(R.id.thermo_temperatures_table);
         temperaturesTable.removeAllViews();
         int x = 0;
-        System.out.println("SNESORS NUM: "+ sensors.size());
         for (Sensor s : sensors){
             System.out.println(sensors.size());
             TableRow entry = new TableRow(context);
@@ -92,21 +89,36 @@ public class Thermostat {
 
         }
     }
+    public boolean isHot() {
+        return hot;
+    }
+
+    public void setHot(boolean hot) {
+        this.hot = hot;
+    }
     public String getSensorIds(){
         int[] a=new int[sensors.size()];
         int x=0;
-        String s ;
         for (Sensor sensor : sensors){
-            if(sensor==null){
+            if(sensor==null)
                 return "[]";
-            }
             a [x]=sensor.getId();
             x++;
-            //s=s+sensor.getId()+",";
         }
-        //s.[s.lastIndexOf(",")]
-        //s=s+"]";
         return Arrays.toString(a);
+    }
+
+    public void removeSensors() {
+        this.sensors=new HashSet<>();
+    }
+    public void addSensor(Sensor s){
+        this.sensors.add(s);
+    }
+    public void update(String name, double temperature, modeOptions mode, HashSet<Sensor> sensors) {
+        this.name=name;
+        this.temperature=temperature;
+        this.mode=mode;
+        this.sensors=sensors;
     }
 
 }

@@ -27,6 +27,7 @@ public class SummaryUpdatesScheduler extends UpdatesScheduler {
     private int thermostatsNumber;
     private TableLayout temperaturesTable;
     private TableLayout thermostatsTable;
+    private TableRow headerEntry;
 
     public SummaryUpdatesScheduler(Activity c, View rootView, String url) {
         super(c,rootView,url);
@@ -78,7 +79,7 @@ public class SummaryUpdatesScheduler extends UpdatesScheduler {
                         TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT,1f);
                 TextView cell = new TextView(context);
                 cell.setLayoutParams(layoutParams);
-                cell.setText("(" + x + ") " + s.getName());
+                cell.setText("(" + (x+1) + ") " + s.getName());
                 entry.addView(cell);
                 TextView cell1 = new TextView(context);
                 cell1.setLayoutParams(layoutParams);
@@ -91,20 +92,23 @@ public class SummaryUpdatesScheduler extends UpdatesScheduler {
         }
     }
     private TableRow getTempsTableHeader(){
-        TableRow entry = new TableRow(context);
-        entry.setLayoutParams(new TableRow.LayoutParams(
-                TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT));
-        TextView cell = new TextView(context);
-        cell.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-        cell.setTextColor(Color.BLACK);
-        cell.setText("Sensor");
-        entry.addView(cell);
-        TextView cell1 = new TextView(context);
-        cell1.setText("Temperature");
-        cell1.setTextColor(Color.BLACK);
-        cell1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-        entry.addView(cell1);
-        return entry;
+        if(headerEntry==null){
+            TableRow entry = new TableRow(context);
+            entry.setLayoutParams(new TableRow.LayoutParams(
+            TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT));
+            TextView cell = new TextView(context);
+            cell.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+            cell.setTextColor(Color.BLACK);
+            cell.setText("Sensor");
+            entry.addView(cell);
+            TextView cell1 = new TextView(context);
+            cell1.setText("Temperature");
+            cell1.setTextColor(Color.BLACK);
+            cell1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+            entry.addView(cell1);
+            headerEntry=entry;
+        }
+        return headerEntry;
     }
     private void ThermoJsonParser (String jsonString){
         JSONParser jsonParser = new JSONParser();
