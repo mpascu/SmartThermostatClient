@@ -1,6 +1,7 @@
 package com.example.marc.smartthermostatclient.Fragments;
 
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -37,7 +38,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by Marc on 06/03/2015.
  */
-public class ThermostatFragment extends android.support.v4.app.Fragment implements Observer{
+public class ThermostatFragment extends Fragment implements Observer{
     private int position;
     private String thermostatURL;
     private ScheduledFuture<?> sf;

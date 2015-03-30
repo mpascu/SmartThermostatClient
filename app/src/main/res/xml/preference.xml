@@ -7,22 +7,24 @@
             android:key="URL_preference"
             android:title="Server URL"
             android:summary="Enter the URL of the server"
-            android:dialogTitle="Enter the URL of the server" />
+            android:dialogTitle="Enter the URL of the server"
+            android:defaultValue="http://"/>
 
         <ListPreference
             android:key="refresh_interval"
             android:title="Refresh interval"
             android:summary="Enter the refreshing interval"
             android:entries="@array/intervalEntries"
-            android:entryValues="@array/intervalValues" />
+            android:entryValues="@array/intervalValues"
+            android:defaultValue="1000"/>
     </PreferenceCategory>
     <PreferenceCategory
         android:title="PreferenceCategory A">
 
         <ListPreference
             android:key="refresh_interval"
-            android:title="Refresh interval"
-            android:summary="Enter the refreshing interval"
+            android:title="Language"
+            android:summary="Select your language"
             android:entries="@array/languages"
             android:entryValues="@array/langValues" />
 

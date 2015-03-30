@@ -70,7 +70,7 @@ public class Thermostat {
         temperaturesTable.removeAllViews();
         int x = 0;
         for (Sensor s : sensors){
-            System.out.println(sensors.size());
+            //System.out.println(sensors.size());
             TableRow entry = new TableRow(context);
             entry.setLayoutParams(new TableRow.LayoutParams(
                     TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT));

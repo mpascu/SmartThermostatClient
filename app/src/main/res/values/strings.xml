@@ -18,4 +18,10 @@
     <string name="add_thermometer">ADD THERMOMETER</string>
     <string name="thermostats">Thermostats</string>
     <string name="add_thermostat">ADD THERMOSTAT</string>
+    <string name="alarm_repeat">Repeat everyday</string>
+    <string name="alarm_vibrate">Vibrate</string>
+    <string name="label">Label</string>
+    <string name="expand_alarm">Expand</string>
+    <string name="delete_alarm">Delete alarm</string>
+    <string name="collapse_alarm">Collapse alarm</string>
 </resources>

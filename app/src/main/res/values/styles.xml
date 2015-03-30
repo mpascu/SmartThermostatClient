@@ -4,5 +4,10 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
     </style>
-
+    <style name="AlarmSwitchTheme">
+        <item name="android:colorControlActivated">@color/hot_pink</item>
+    </style>
+    <style name="body">
+        <item name="android:textSize">@dimen/body_font_size</item>
+    </style>
 </resources>

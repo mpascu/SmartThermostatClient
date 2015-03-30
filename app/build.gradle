@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.marc.smartthermostatclient"
-        minSdkVersion 15
+        minSdkVersion 17
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
@@ -24,4 +24,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile project(':volley')
     compile 'com.googlecode.json-simple:json-simple:1.1'
+    compile 'com.android.support:support-v13:22.0.0'
 }
