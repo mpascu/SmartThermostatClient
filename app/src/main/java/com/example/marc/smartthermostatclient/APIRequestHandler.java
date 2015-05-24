@@ -49,6 +49,8 @@ public class APIRequestHandler {
                 params.put("temperature", Double.toString(t.getTemperature()));
                 params.put("mode", t.getMode().toString());
                 params.put("sensors", t.getSensorIds());
+                params.put("hot",String.valueOf(t.isHot()));
+                params.put("time_programming", t.getTimeListInJson());
                 return params;
             }
         };

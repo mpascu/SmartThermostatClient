@@ -24,4 +24,6 @@
     <string name="expand_alarm">Expand</string>
     <string name="delete_alarm">Delete alarm</string>
     <string name="collapse_alarm">Collapse alarm</string>
+    <string name="add_program">Add Program</string>
+    <string name="delete_thermostat">ELIMINAR ZONES</string>
 </resources>

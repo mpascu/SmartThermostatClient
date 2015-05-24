@@ -16,7 +16,9 @@ import android.view.ViewTreeObserver;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -28,13 +30,17 @@ import android.widget.ToggleButton;
 
 import com.example.marc.smartthermostatclient.DataStructure.Alarm;
 import com.example.marc.smartthermostatclient.DataStructure.DaysOfWeek;
+import com.example.marc.smartthermostatclient.DataStructure.Thermostat;
+import com.example.marc.smartthermostatclient.DataStructure.ThermostatManager;
 import com.example.marc.smartthermostatclient.R;
 
 import java.text.DateFormatSymbols;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * Created by Marc on 25/03/2015.
@@ -49,36 +55,47 @@ public class ProgrammerFragment extends Fragment {
     private static final float COLLAPSE_DECELERATION = 0.7f;
     private Interpolator mExpandInterpolator;
     private Interpolator mCollapseInterpolator;
+    private Thermostat thermostat;
 
 
-    private static final int ROTATE_180_DEGREE = 180;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View v = inflater.inflate(R.layout.programs_list, container, false);
+        Bundle extras = getArguments();
+        thermostat = ThermostatManager.getInstance().getThermostat(extras.getInt("pos"));
+        System.out.println(thermostat.toString());
         mProgramsList = (ListView) v.findViewById(R.id.programs_list);
-        Alarm[] alarms = new Alarm[3];
+        final Alarm[] alarms = new Alarm[3];
         alarms[0]= new Alarm("9","00", "12","00");
         alarms[1]= new Alarm("15","00", "20","00");
         alarms[2]= new Alarm("9","00", "22","00");
-        ProgrammerItemAdapter mAdapter = new ProgrammerItemAdapter(getActivity(),alarms);
+        final ArrayList<Alarm> list = new ArrayList<Alarm>();
+        for (int i = 0; i < alarms.length; ++i) {
+            list.add(alarms[i]);
+        }
+        thermostat.setTimeList(list);
+        final ProgrammerItemAdapter mAdapter = new ProgrammerItemAdapter(getActivity(),list);
         mProgramsList.setAdapter(mAdapter);
+
+        Button addButton = (Button)v.findViewById(R.id.add_program);
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                list.add(new Alarm());
+                thermostat.setTimeList(list);
+            }
+        });
+
 
         mExpandInterpolator = new DecelerateInterpolator(EXPAND_DECELERATION);
         mCollapseInterpolator = new DecelerateInterpolator(COLLAPSE_DECELERATION);
         return v;
     }
-    private void showLabelDialog(final Alarm alarm) {
-        //show label dialog
-    }
 
-    public void setLabel(Alarm alarm, String label) {
-        alarm.label = label;
-        //asyncUpdateAlarm(alarm, false);
-    }
-
-    private class ProgrammerItemAdapter extends ArrayAdapter {
+    public class ProgrammerItemAdapter extends ArrayAdapter {
         private final LayoutInflater mFactory;
-        private final Alarm[] programsList;
+
+        private final List<Alarm> programsList;
         private Context mContext;
         private final String[] mShortWeekDayStrings;
         private final String[] mLongWeekDayStrings;
@@ -108,7 +125,6 @@ public class ProgrammerFragment extends Fragment {
             ImageView delete;
             View expandArea;
             View summary;
-            TextView clickableLabel;
             CheckBox repeat;
             LinearLayout repeatDays;
             ViewGroup[] dayButtonParents = new ViewGroup[7];
@@ -116,7 +132,6 @@ public class ProgrammerFragment extends Fragment {
             View hairLine;
             View arrow;
             View collapseExpandArea;
-            View footerFiller;
 
             // Other states
             Alarm alarm;
@@ -132,7 +147,7 @@ public class ProgrammerFragment extends Fragment {
                 Calendar.SUNDAY,
         };
 
-        public ProgrammerItemAdapter(Context context, Alarm[] values) {
+        public ProgrammerItemAdapter(Context context, List<Alarm> values) {
 
             super(context, R.layout.programmer_list_item, values);
             this.mContext = context;
@@ -154,9 +169,6 @@ public class ProgrammerFragment extends Fragment {
 
         }
 
-        public void removeSelectedId(int id) {
-            mSelectedAlarms.remove(id);
-        }
 
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
@@ -171,14 +183,14 @@ public class ProgrammerFragment extends Fragment {
             itemHolder.alarmItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (isAlarmExpanded(programsList[position])) {
+                    if (isAlarmExpanded(programsList.get(position))) {
                         collapseAlarm(itemHolder, true);
                     } else {
                         expandAlarm(itemHolder, true);
                     }
                 }
             });
-            Alarm current = programsList[position];
+            Alarm current = programsList.get(position);
             itemHolder.alarm=current;
             itemHolder.clockStart.setText(current.startTimeToString());
             itemHolder.clockEnd.setText(current.endTimeToString());
@@ -232,8 +244,22 @@ public class ProgrammerFragment extends Fragment {
             //AlarmUtils.showTimeEditDialog(getChildFragmentManager(),                      alarm, AlarmClockFragment.this                        , DateFormat.is24HourFormat(getActivity()));
             //expandAlarm(itemHolder, true);
             itemHolder.alarmItem.post(mScrollRunnable);
+            itemHolder.delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    remove(itemHolder.alarm);
 
-
+                }
+            });
+            itemHolder.onoff.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked)
+                        itemHolder.alarm.enabled=true;
+                    else
+                        itemHolder.alarm.enabled=false;
+                }
+            });
             return rowView;
         }
 
@@ -253,7 +279,6 @@ public class ProgrammerFragment extends Fragment {
             holder.hairLine = view.findViewById(R.id.hairline);
             holder.arrow = view.findViewById(R.id.arrow);
             holder.repeat = (CheckBox) view.findViewById(R.id.repeat_onoff);
-            holder.clickableLabel = (TextView) view.findViewById(R.id.edit_label);
             holder.repeatDays = (LinearLayout) view.findViewById(R.id.repeat_days);
             holder.collapseExpandArea = view.findViewById(R.id.collapse_expand);
             //holder.footerFiller = view.findViewById(R.id.alarm_footer_filler);
@@ -278,20 +303,6 @@ public class ProgrammerFragment extends Fragment {
 
         private void bindExpandArea(final ItemHolder itemHolder, final Alarm alarm) {
             // Views in here are not bound until the item is expanded.
-
-            if (alarm.label != null && alarm.label.length() > 0) {
-                itemHolder.clickableLabel.setText(alarm.label);
-                itemHolder.clickableLabel.setTextColor(mColorLit);
-            } else {
-                itemHolder.clickableLabel.setText(R.string.label);
-                itemHolder.clickableLabel.setTextColor(mColorDim);
-            }
-            itemHolder.clickableLabel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    showLabelDialog(alarm);
-                }
-            });
 
             if (mRepeatChecked.contains(alarm.id) || !itemHolder.alarm.daysOfWeek.isRepeating()) {
                 itemHolder.repeat.setChecked(true);

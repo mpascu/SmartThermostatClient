@@ -22,7 +22,7 @@
         android:title="PreferenceCategory A">
 
         <ListPreference
-            android:key="refresh_interval"
+            android:key="lang"
             android:title="Language"
             android:summary="Select your language"
             android:entries="@array/languages"

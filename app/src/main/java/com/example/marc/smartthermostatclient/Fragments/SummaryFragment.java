@@ -35,6 +35,8 @@ public class SummaryFragment extends Fragment implements Observer{
     private SharedPreferences prefs;
     ScheduledFuture<?> sf;
     private int refreshInterval;
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -42,6 +44,7 @@ public class SummaryFragment extends Fragment implements Observer{
         Button buttonDeleteThermometers = (Button)rootView.findViewById(R.id.buttonPUT);
         Button buttonAddThermometer = (Button)rootView.findViewById(R.id.buttonPOST);
         Button addThermostat = (Button) rootView.findViewById(R.id.addThermostat);
+        Button buttonDeleteThermostats = (Button)rootView.findViewById(R.id.deleteThermostats);
 
         //load shared preferences
         serverURL=loadPreferences();
@@ -62,7 +65,7 @@ public class SummaryFragment extends Fragment implements Observer{
         buttonDeleteThermometers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                APIRequestHandler.INSTANCE.makeDeleteRequest(serverURL + "/temp",listener,errorListener);
+                APIRequestHandler.INSTANCE.makeDeleteRequest(serverURL + "/temp", listener, errorListener);
             }
         });
         buttonAddThermometer.setOnClickListener(new View.OnClickListener() {
@@ -70,14 +73,14 @@ public class SummaryFragment extends Fragment implements Observer{
             public void onClick(View v) {
                 final EditText input = new EditText(getActivity());
                 new AlertDialog.Builder(getActivity())
-                        .setTitle("Add thermometer")
-                        .setMessage("Enter the name of the thermometer")
+                        .setTitle("Afegir termometre")
+                        .setMessage("Introdueix el nom del termometre")
                         .setView(input)
-                        .setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                        .setPositiveButton("Afegir", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 APIRequestHandler.INSTANCE.makePostRequest(serverURL + "/temp",input.getText().toString(),listener,errorListener);
                             }
-                         }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                         }).setNegativeButton("Cancel.lar", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 // Do nothing.
                             }
@@ -90,20 +93,27 @@ public class SummaryFragment extends Fragment implements Observer{
             public void onClick(View v) {
                 final EditText input = new EditText(getActivity());
                 new AlertDialog.Builder(getActivity())
-                        .setTitle("Add thermostat")
-                        .setMessage("Enter the name of the thermostat")
+                        .setTitle("Afegir zona")
+                        .setMessage("Introdueix el nom de la zona")
                         .setView(input)
-                        .setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                        .setPositiveButton("Afegir", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                APIRequestHandler.INSTANCE.makePostRequest(serverURL + "/thermo",input.getText().toString(),listener,errorListener);
+                                APIRequestHandler.INSTANCE.makePostRequest(serverURL + "/thermo", input.getText().toString(), listener, errorListener);
                             }
-                        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        }).setNegativeButton("Cancel.lar", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                     }
                 }).show();
 
             }
         });
+        buttonDeleteThermostats.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                APIRequestHandler.INSTANCE.makeDeleteRequest(serverURL + "/thermo", listener, errorListener);
+            }
+        });
+
         return rootView;
     }
 

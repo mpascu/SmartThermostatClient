@@ -4,6 +4,11 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="left|bottom">
     <ListView
         android:id="@+id/programs_list"
         android:layout_width="match_parent"
@@ -12,4 +17,17 @@
         android:descendantFocusability="beforeDescendants"
         android:background="@color/black"
         />
+
+    </LinearLayout>
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_program"
+            android:id="@+id/add_program"
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_marginTop="30dp"/>
+
+
 </FrameLayout>

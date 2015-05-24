@@ -2,6 +2,7 @@ package com.example.marc.smartthermostatclient.Fragments;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
@@ -43,6 +45,7 @@ public class ThermostatFragment extends Fragment implements Observer{
     private String thermostatURL;
     private ScheduledFuture<?> sf;
     private Thermostat t;
+    private ProgrammerFragment programmerFragment;
     public static ThermostatFragment create(int position) {
         Bundle args = new Bundle();
         args.putInt("POS", position);
@@ -157,6 +160,36 @@ public class ThermostatFragment extends Fragment implements Observer{
                 else{
                     hotOrColdButton.setImageResource(R.drawable.ic_radiator);
                     t.setHot(true);
+                }
+            }
+        });
+
+        programmerFragment = new ProgrammerFragment();
+        Bundle extras = new Bundle();
+        extras.putInt("pos",position);
+        programmerFragment.setArguments(extras);
+
+        final CheckBox timeProgrammer = (CheckBox)view.findViewById(R.id.checkBox_time_programmer);
+        timeProgrammer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (timeProgrammer.isChecked()) {
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.setCustomAnimations(R.anim.slide_up, R.anim.slide_down);
+
+
+
+                    ft.replace(R.id.thermostat_fragment, programmerFragment, "programmerFragment");
+
+                    // Start the animated transition.
+                    ft.commit();
+                }
+                else{
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.setCustomAnimations(R.anim.slide_up, R.anim.slide_down);
+                    ft.remove(programmerFragment);
+                    ft.commit();
                 }
             }
         });

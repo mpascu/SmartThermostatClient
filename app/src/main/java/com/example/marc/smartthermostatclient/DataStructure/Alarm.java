@@ -33,7 +33,6 @@ public final class Alarm {
     public String hourEnd;
     public String minutesEnd;
     public DaysOfWeek daysOfWeek;
-    public String label;
     public boolean deleteAfterUse;
 
     public Alarm(String hourInit, String minutesInit, String hourEnd,String minutesEnd) {
@@ -43,7 +42,16 @@ public final class Alarm {
         this.hourEnd = hourEnd;
         this.minutesEnd = minutesEnd;
         this.daysOfWeek = new DaysOfWeek(0);
-        this.label = "";
+        this.deleteAfterUse = false;
+    }
+
+    public Alarm() {
+        this.id = ++count;
+        this.hourStart = "12";
+        this.minutesStart = "00";
+        this.hourEnd = "13";
+        this.minutesEnd = "00";
+        this.daysOfWeek = new DaysOfWeek(0);
         this.deleteAfterUse = false;
     }
 
@@ -67,11 +75,20 @@ public final class Alarm {
                 ", hour=" + hourStart +
                 ", minutes=" + minutesStart +
                 ", daysOfWeek=" + daysOfWeek +
-                ", label='" + label + '\'' +
                 ", deleteAfterUse=" + deleteAfterUse +
                 '}';
     }
-
+    public String toJson() {
+        return "{" +
+                "\"id\":" +id +
+                ", \"enabled\":" + "\""+enabled+"\"" +
+                ", \"startHour\":" + hourStart +
+                ", \"startMinutes\":" + Integer.parseInt(minutesStart) +
+                ", \"endHour\":" +hourEnd +
+                ", \"endMinutes\":" +Integer.parseInt(minutesEnd) +
+                ", \"daysOfWeek\":" + daysOfWeek.getSetDays().toString() +
+                '}';
+    }
     public String startTimeToString() {
         return this.hourStart+":"+this.minutesStart;
     }

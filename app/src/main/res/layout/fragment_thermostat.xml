@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/thermostat_fragment"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp">
+    android:padding="5dp"
+    android:background="@color/alarm_whiteish">
 
     <LinearLayout
         android:orientation="horizontal"
@@ -83,15 +85,14 @@
                             android:layout_height="40dp"
                             android:text="-"
                             android:textSize="15sp"
-                            android:id="@+id/minusTemp"
-                            />
+                            android:id="@+id/minusTemp" />
                         <Button
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             android:text="+"
                             android:textSize="15sp"
                             android:id="@+id/plusTemp"
-                            android:textAlignment="center"/>
+                            android:textAlignment="center" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -118,7 +119,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/time_programmer"
-            android:id="@+id/checkBox" />
+            android:id="@+id/checkBox_time_programmer" />
         </LinearLayout>
         <LinearLayout
             android:id="@+id/rightLayout"
@@ -194,5 +195,7 @@
 
 
     </LinearLayout>
+
+
 
 </LinearLayout>

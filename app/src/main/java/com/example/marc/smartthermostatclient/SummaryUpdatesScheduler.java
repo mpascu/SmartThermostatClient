@@ -30,7 +30,7 @@ public class SummaryUpdatesScheduler extends UpdatesScheduler {
     private TableRow headerEntry;
 
     public SummaryUpdatesScheduler(Activity c, View rootView, String url) {
-        super(c,rootView,url);
+        super(c, rootView, url);
     }
 
     @Override
@@ -66,6 +66,7 @@ public class SummaryUpdatesScheduler extends UpdatesScheduler {
         try {
             JSONArray temperatures = (JSONArray) jsonParser.parse(jsonString);
             temperaturesTable.removeAllViews();
+
             temperaturesTable.addView(getTempsTableHeader(),0);
             for (int x=0; x<temperatures.size();x++){
                 JSONObject sensor = (JSONObject)temperatures.get(x);
@@ -87,6 +88,7 @@ public class SummaryUpdatesScheduler extends UpdatesScheduler {
                 entry.addView(cell1);
                 temperaturesTable.addView(entry,x+1);
             }
+            temperaturesTable.setBackgroundColor(Color.parseColor("#28ffffff"));
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -102,7 +104,7 @@ public class SummaryUpdatesScheduler extends UpdatesScheduler {
             cell.setText("Sensor");
             entry.addView(cell);
             TextView cell1 = new TextView(context);
-            cell1.setText("Temperature");
+            cell1.setText("Temperatura");
             cell1.setTextColor(Color.BLACK);
             cell1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
             entry.addView(cell1);
@@ -138,7 +140,12 @@ public class SummaryUpdatesScheduler extends UpdatesScheduler {
                 entry.addView(cell1);
                 TextView cell2 = new TextView(context);
                 cell2.setLayoutParams(layoutParams);
-                cell2.setText(sensorValues.get("temperature").toString() + " ºC");
+                if(sensorValues.get("mode").toString().equals("AUTO")){
+                    cell2.setText(sensorValues.get("temperature").toString() + " ºC");
+                }
+                else{
+                    cell2.setText(sensorValues.get("mode").toString());
+                }
                 entry.addView(cell2);
                 thermostatsTable.addView(entry,x+1);
             }
@@ -153,7 +160,7 @@ public class SummaryUpdatesScheduler extends UpdatesScheduler {
         TextView cell = new TextView(context);
         cell.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         cell.setTextColor(Color.BLACK);
-        cell.setText("Thermostat name");
+        cell.setText("Nom de la zona");
         entry.addView(cell);
         TextView cell1 = new TextView(context);
         cell1.setText("Sensors");
@@ -161,7 +168,7 @@ public class SummaryUpdatesScheduler extends UpdatesScheduler {
         cell1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         entry.addView(cell1);
         TextView cell2 = new TextView(context);
-        cell2.setText("Status");
+        cell2.setText("Mode");
         cell2.setTextColor(Color.BLACK);
         cell2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         entry.addView(cell2);

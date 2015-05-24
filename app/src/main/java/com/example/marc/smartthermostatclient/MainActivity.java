@@ -1,7 +1,9 @@
 package com.example.marc.smartthermostatclient;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -11,9 +13,11 @@ import android.widget.Switch;
 
 import com.android.volley.toolbox.Volley;
 
+import java.io.Serializable;
+import java.util.Locale;
 import java.util.Observable;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements Serializable{
 
     private ObservableSwitchChangeListener listener;
     private SwipeTabsPagerAdapter pagerAdapter;
@@ -28,6 +32,13 @@ public class MainActivity extends ActionBarActivity {
         pagerAdapter = new SwipeTabsPagerAdapter(getFragmentManager(), listener);
         viewPager.setAdapter(pagerAdapter);
         APIRequestHandler.INSTANCE.setQueue(Volley.newRequestQueue(this));
+
+        Locale locale = new Locale(PreferenceManager.getDefaultSharedPreferences(this).getString("lang", ""));
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config,
+                getBaseContext().getResources().getDisplayMetrics());
     }
     public void setPages(int pages){
         pagerAdapter.setCount(pages);

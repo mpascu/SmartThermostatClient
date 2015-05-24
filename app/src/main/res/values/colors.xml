@@ -52,5 +52,5 @@
     <color name="status_bar">#26000000</color>
 
     <color name="time_picker_gray">#212121</color>
-
+    <color name="buttons">#ff0aa8e6</color>
 </resources>

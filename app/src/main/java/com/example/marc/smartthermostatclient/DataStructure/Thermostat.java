@@ -9,16 +9,19 @@ import android.widget.TextView;
 import com.example.marc.smartthermostatclient.MainActivity;
 import com.example.marc.smartthermostatclient.R;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 
 /**
  * Created by Marc on 13/03/2015.
  */
-public class Thermostat {
+public class Thermostat implements Serializable{
     private MainActivity context;
     private String name;
     private double temperature;
+    private ArrayList<Alarm> timeList;
     public enum modeOptions{ON,OFF,AUTO};
     private boolean hot;
     private modeOptions mode;
@@ -47,6 +50,28 @@ public class Thermostat {
 
     public void setMode(modeOptions mode) {
         this.mode = mode;
+    }
+
+    public void setTimeList(ArrayList<Alarm> timeList) {
+        this.timeList = timeList;
+    }
+
+    public String getTimeListInJson() {
+        String program = "[";
+        if (timeList != null) {
+            for (Alarm a: timeList) {
+                if(program.equals("[")){
+                    program = program + a.toJson();
+
+                }
+                else {
+                    program = program + ",";
+                    program = program + a.toJson();
+                }
+            }
+        }
+        program = program+"]";
+        return program;
     }
 
     public void updateView(View rootView) {
