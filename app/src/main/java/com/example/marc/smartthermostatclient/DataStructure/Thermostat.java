@@ -21,7 +21,7 @@ public class Thermostat implements Serializable{
     private MainActivity context;
     private String name;
     private double temperature;
-    private ArrayList<Alarm> timeList;
+    private ArrayList<TimeProgram> timeList;
     public enum modeOptions{ON,OFF,AUTO};
     private boolean hot;
     private modeOptions mode;
@@ -52,14 +52,14 @@ public class Thermostat implements Serializable{
         this.mode = mode;
     }
 
-    public void setTimeList(ArrayList<Alarm> timeList) {
+    public void setTimeList(ArrayList<TimeProgram> timeList) {
         this.timeList = timeList;
     }
 
     public String getTimeListInJson() {
         String program = "[";
         if (timeList != null) {
-            for (Alarm a: timeList) {
+            for (TimeProgram a: timeList) {
                 if(program.equals("[")){
                     program = program + a.toJson();
 

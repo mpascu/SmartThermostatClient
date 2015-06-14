@@ -16,7 +16,7 @@
 
 package com.example.marc.smartthermostatclient.DataStructure;
 
-public final class Alarm {
+public final class TimeProgram {
     /**
      * Alarms start with an invalid id when it hasn't been saved to the database.
      */
@@ -25,7 +25,6 @@ public final class Alarm {
     private static final int DELETE_AFTER_USE_INDEX = 8;
 
     // Public fields
-    // TODO: Refactor instance names
     public long id;
     public boolean enabled;
     public String hourStart;
@@ -35,7 +34,7 @@ public final class Alarm {
     public DaysOfWeek daysOfWeek;
     public boolean deleteAfterUse;
 
-    public Alarm(String hourInit, String minutesInit, String hourEnd,String minutesEnd) {
+    public TimeProgram(String hourInit, String minutesInit, String hourEnd, String minutesEnd) {
         this.id = ++count;
         this.hourStart = hourInit;
         this.minutesStart = minutesInit;
@@ -45,7 +44,7 @@ public final class Alarm {
         this.deleteAfterUse = false;
     }
 
-    public Alarm() {
+    public TimeProgram() {
         this.id = ++count;
         this.hourStart = "12";
         this.minutesStart = "00";
@@ -57,8 +56,8 @@ public final class Alarm {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Alarm)) return false;
-        final Alarm other = (Alarm) o;
+        if (!(o instanceof TimeProgram)) return false;
+        final TimeProgram other = (TimeProgram) o;
         return id == other.id;
     }
 
